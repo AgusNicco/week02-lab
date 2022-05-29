@@ -9,7 +9,6 @@ class Program
             public string LastName;
             public string? MiddleName;
 
-
             public bool AlphabeticalTest(string s)
             {
                 foreach (char c in s)
@@ -76,6 +75,7 @@ class Program
 
                 public void CreateNumber()
                 {
+                    Console.Clear();
                     Console.WriteLine("\nNow please input the credit card number, it should be composed of 16 numberes with a space every 4 digits");
                     do { CardNumber = Console.ReadLine(); } while (!ProperInputTest(CardNumber));
                 }
@@ -132,6 +132,41 @@ class Program
                     return $"{Month}/{Day}";
                 }
             }
+
+            public class CVV
+            {
+                public string Number;
+
+                public bool ProperInputTest(string s)
+                {
+                    if (s.Length != 3) return false;
+
+                    for (int i = 0; i < s.Length; i++)
+                    {
+                        if (!((int)s[i] > 47 && (int)s[i] < 58)) return false;
+                    }
+                    return true;
+                }
+
+                public void TestCVV()
+                {
+                    Debug.Assert(ProperInputTest("050"));
+                    Debug.Assert(!ProperInputTest("1234"));
+                    Debug.Assert(!ProperInputTest("a34"));
+                    Debug.Assert(!ProperInputTest("{}xa3"));
+                }
+
+                public void CreateCVV()
+                {
+                    Console.WriteLine("\nPlease input the 3-digit CVV:");
+                    do { Number = Console.ReadLine(); } while (!ProperInputTest(Number));
+                }
+
+                public string GetConsoleString()
+                {
+                    return Number;
+                }
+            }
         }
     }
 
@@ -146,23 +181,40 @@ class Program
         User.CreditCard.ExpirationDate irrelevantVariable3 = new User.CreditCard.ExpirationDate();
         irrelevantVariable3.TestExpirationDate();
 
-
+        User.CreditCard.CVV irrelevantVariable4 = new User.CreditCard.CVV();
+        irrelevantVariable4.TestCVV();
     }
 
     static void Main()
     {
         TestAll();
         Console.Clear();
+        Console.WriteLine("Hello user! This program will let you create a human subject and define their name as well as their crdit card information (a little weird ngl)");
+        Console.WriteLine("\nPress any key to begin.");
+        ConsoleKey irrelevantVariable5 = Console.ReadKey(true).Key;
+        Console.Clear();
 
-        User.Name x = new User.Name();
-        x.CreateName();
+        User.Name Name = new User.Name();
+        Name.CreateName();
 
-        User.CreditCard.Number y = new User.CreditCard.Number();
-        y.CreateNumber();
+        User.CreditCard.Number CardNumber = new User.CreditCard.Number();
+        CardNumber.CreateNumber();
 
-        User.CreditCard.ExpirationDate z = new User.CreditCard.ExpirationDate();
-        z.CreateEpirationDate();
+        User.CreditCard.ExpirationDate ExpirationDate = new User.CreditCard.ExpirationDate();
+        ExpirationDate.CreateEpirationDate();
 
-        //Console.WriteLine(z.GetConsoleString());
+        User.CreditCard.CVV CVV = new User.CreditCard.CVV();
+        CVV.CreateCVV();
+
+        Console.Clear();
+        Console.WriteLine("Here is the information of the subject you just created:\n");
+        Console.WriteLine("Full name: "+Name.GetConsoleString()+"\n");
+        Console.WriteLine("Credit Card information: ");
+        Console.WriteLine("\nNumber: "+CardNumber.GetConsoleString());
+        Console.WriteLine("Expiration date: "+ExpirationDate.GetConsoleString());
+        Console.WriteLine($"CVV: "+CVV.GetConsoleString()+"\n\n");
+
+
+        //Console.WriteLine(g.GetConsoleString());
     }
 }
